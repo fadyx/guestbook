@@ -1,7 +1,7 @@
-const usernameRegEx = /^(?=.{8,20}$)(?![_.])(?!.*[_.]{2})[a-zA-Z0-9._]+(?<![_.])$/;
+import regex from "./regex.js";
 
 const isUsername = (username) => {
-	return usernameRegEx.test(username);
+	return regex.username.test(username);
 };
 
 export default { isUsername };

@@ -1,5 +1,6 @@
 import Message from "../models/message.js";
 import apiResponse from "../utils/apiResponse.js";
+import regex from "../utils/regex.js";
 
 const getAllMessages = async (req, res) => {
 	try {
@@ -10,7 +11,16 @@ const getAllMessages = async (req, res) => {
 	}
 };
 
-const getMessage = async (req, res) => {};
+const getMessage = async (req, res) => {
+	try {
+		const messageId = regex.objectId.exec(req.url).shift();
+		const message = await Message.findById(messageId);
+		if (!message) return apiResponse.error(res, "message not found", 404);
+		return apiResponse.success(res, message, 200);
+	} catch (error) {
+		return apiResponse.error(res, "internal server error.", 500);
+	}
+};
 
 const postMessage = async (req, res) => {};
 
