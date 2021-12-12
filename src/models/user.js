@@ -30,22 +30,10 @@ const userSchema = new mongoose.Schema({
 		displayname: {
 			type: String,
 			trim: true,
+			maxlength: 20,
 			required: true,
 		},
 	},
-
-	messages: [
-		{
-			type: mongoose.Schema.Types.ObjectId,
-			ref: "Message",
-		},
-	],
-	replies: [
-		{
-			type: mongoose.Schema.Types.ObjectId,
-			ref: "Reply",
-		},
-	],
 });
 
 userSchema.pre("validate", async function pre(next) {
