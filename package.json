@@ -1,0 +1,39 @@
+{
+	"name": "guestbook",
+	"version": "0.0.1",
+	"description": "Guestbook MERN stack web application mono repository.",
+	"author": "fady",
+	"license": "Unlicense",
+	"private": true,
+	"type": "module",
+	"engines": {
+		"node": ">=14.17",
+		"npm": ">=7.23.0"
+	},
+	"main": "src/index.js",
+	"scripts": {
+		"client": "cd client && npm run start",
+		"server": "DEBUG=server:* npx nodemon -r dotenv/config src/index.js dotenv_config_path=.development.env",
+		"dev": "npm run server && npm run client",
+		"local-prod": "npm build && npm start",
+		"start": "node -r dotenv/config src/index.js dotenv_config_path=.production.env",
+		"build": "cd client && npm install && npm run build",
+		"heroku-postbuild": "cd client && npm install && npm run build"
+	},
+	"dependencies": {
+		"dotenv": "^10.0.0",
+		"mongoose": "^6.1.1"
+	},
+	"devDependencies": {
+		"eslint": "^7.32.0",
+		"eslint-config-airbnb-base": "^14.2.1",
+		"eslint-config-node": "^4.1.0",
+		"eslint-config-prettier": "^8.3.0",
+		"eslint-plugin-import": "^2.24.2",
+		"eslint-plugin-node": "^11.1.0",
+		"eslint-plugin-prettier": "^4.0.0",
+		"eslint-plugin-security": "^1.4.0",
+		"nodemon": "^2.0.12",
+		"prettier": "^2.4.1"
+	}
+}
