@@ -6,7 +6,6 @@ const messageRouter = async (req, res) => {
 	try {
 		authGuard(req);
 	} catch (error) {
-		console.log(error);
 		return apiResponse.error(res, "unauthorized", 401);
 	}
 

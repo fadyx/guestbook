@@ -1,10 +1,11 @@
 import token from "./token.js";
 
 const authGuard = (req) => {
-	const rawToken = req.headers.authorization;
-	if (!rawToken) throw new Error("unauthorized");
-	const verifiedToken = token.verifyAccessToken(rawToken.replace("Bearer ", ""));
-	req.user = verifiedToken;
+	if (!req.headers.authorization || req.headers.authorization.split(" ").shift().toLowerCase() !== "bearer")
+		throw new Error("unauthenticated");
+
+	const rawToken = req.headers.authorization.split(" ").pop();
+	req.user = token.verifyAccessToken(rawToken);
 };
 
 export default authGuard;
