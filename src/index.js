@@ -2,16 +2,19 @@ import http from "http";
 
 import db from "./database/db.js";
 
+import authRouter from "./routes/auth.js";
 import messagesRouter from "./routes/message.js";
+
+import apiResponse from "./utils/apiResponse.js";
 
 const server = http.createServer(async (req, res) => {
 	if (req.url.startsWith("/api/")) {
+		if (req.url.startsWith("/api/auth")) return authRouter(req, res);
 		if (req.url.startsWith("/api/messages")) return messagesRouter(req, res);
 	}
 
 	// not found
-	res.writeHead(404, { "Content-Type": "application/json" });
-	return res.end(JSON.stringify({ error: "route not found." }));
+	return apiResponse.error(res, "route not found", 404);
 });
 
 const bootstrap = async () => {
