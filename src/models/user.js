@@ -17,22 +17,16 @@ const userSchema = new mongoose.Schema({
 		},
 	},
 
-	token: {
-		type: String,
-	},
-
 	password: {
 		type: String,
 		required: [true, "password is required."],
 	},
 
-	profile: {
-		displayname: {
-			type: String,
-			trim: true,
-			maxlength: 20,
-			required: true,
-		},
+	displayname: {
+		type: String,
+		trim: true,
+		maxlength: 20,
+		required: true,
 	},
 });
 
@@ -54,12 +48,8 @@ userSchema.pre("save", async function pre(next) {
 
 userSchema.methods.toJSON = function toJSON() {
 	const user = this;
-	const publicUser = (({ username, profile }) => ({ username, profile }))(user);
+	const publicUser = (({ username, displayname }) => ({ username, displayname }))(user);
 	return publicUser;
-};
-
-userSchema.methods.setToken = function setToken(token) {
-	this.token = token;
 };
 
 userSchema.methods.setPassword = function setPassword(password) {
@@ -70,10 +60,6 @@ userSchema.methods.checkPassword = async function checkPassword(password) {
 	const user = this;
 	const match = await encrypt.compare(user.password, password);
 	return match;
-};
-
-userSchema.methods.logout = function logout() {
-	this.token = null;
 };
 
 const User = mongoose.model("User", userSchema);

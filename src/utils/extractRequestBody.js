@@ -7,7 +7,7 @@ const extractRequestBody = (req) => {
 			});
 
 			req.on("end", () => {
-				resolve(rawData);
+				resolve(JSON.parse(rawData));
 			});
 		} catch (error) {
 			reject(error);
