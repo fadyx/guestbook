@@ -1,6 +1,7 @@
 import Message from "../models/message.js";
 import apiResponse from "../utils/apiResponse.js";
 import regex from "../utils/regex.js";
+import extractRequestBody from "../utils/extractRequestBody.js";
 
 const getAllMessages = async (req, res) => {
 	try {
