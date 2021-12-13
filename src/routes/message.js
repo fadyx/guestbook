@@ -1,7 +1,15 @@
 import controller from "../controllers/message.js";
 import apiResponse from "../utils/apiResponse.js";
+import authGuard from "../utils/authGuard.js";
 
 const messageRouter = async (req, res) => {
+	try {
+		authGuard(req);
+	} catch (error) {
+		console.log(error);
+		return apiResponse.error(res, "unauthorized", 401);
+	}
+
 	if (req.url === "/api/messages") {
 		if (req.method === "GET") return controller.getAllMessages(req, res);
 		if (req.method === "POST") return controller.postMessage(req, res);
