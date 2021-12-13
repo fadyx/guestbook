@@ -12,7 +12,11 @@ const signup = async (req, res) => {
 			return apiResponse.error(res, "username and password are required.", 400);
 
 		const newUser = await User.create(rawUser);
-		const accessToken = token.signAccessToken({ username: newUser.username, displayname: newUser.displayname });
+		const accessToken = token.signAccessToken({
+			userId: newUser._id,
+			username: newUser.username,
+			displayname: newUser.displayname,
+		});
 
 		return apiResponse.success(res, { user: newUser, token: accessToken }, 200);
 	} catch (error) {
@@ -38,7 +42,11 @@ const login = async (req, res) => {
 		const isValidPassword = await user.checkPassword(password);
 		if (!isValidPassword) return apiResponse.error(res, "invalid username or password", 401);
 
-		const accessToken = token.signAccessToken({ username: user.username, displayname: user.displayname });
+		const accessToken = token.signAccessToken({
+			userId: user._id,
+			username: user.username,
+			displayname: user.displayname,
+		});
 
 		return apiResponse.success(res, { user, token: accessToken }, 200);
 	} catch (error) {
