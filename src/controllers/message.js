@@ -1,4 +1,5 @@
 import Message from "../models/message.js";
+import Reply from "../models/reply.js";
 import apiResponse from "../utils/apiResponse.js";
 import regex from "../utils/regex.js";
 import extractRequestBody from "../utils/extractRequestBody.js";
@@ -81,8 +82,36 @@ const deleteMessage = async (req, res) => {
 	}
 };
 
-const getReplies = async (req, res) => {};
+const getReplies = async (req, res) => {
+	try {
+		const messageId = regex.objectId.exec(req.url).shift();
+		if (!messageId) return apiResponse.error(res, "message is not found.", 404);
+		const replies = await Reply.find({ message: messageId });
+		return apiResponse.success(res, replies, 200);
+	} catch (error) {
+		return apiResponse.error(res, "internal server error.", 500);
+	}
+};
 
-const postReply = async (req, res) => {};
+const postReply = async (req, res) => {
+	try {
+		const { user } = req;
+
+		const { text } = await extractRequestBody(req);
+		if (!text) return apiResponse.error(res, "message text is required.", 400);
+
+		const messageId = regex.objectId.exec(req.url).shift();
+		if (!messageId) return apiResponse.error(res, "message is not found.", 404);
+
+		const message = await Message.findById(messageId);
+		if (!message) return apiResponse.error(res, "message is not found.", 404);
+
+		const newReply = await Reply.create({ text, user: user.userId, message: message._id });
+		return apiResponse.success(res, newReply, 201);
+	} catch (error) {
+		if (error.name === "ValidationError") return apiResponse.error(res, "invalid input", 400);
+		return apiResponse.error(res, "internal server error.", 500);
+	}
+};
 
 export default { getAllMessages, getMessage, postMessage, editMessage, deleteMessage, getReplies, postReply };
