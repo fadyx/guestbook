@@ -48,7 +48,7 @@ userSchema.pre("save", async function pre(next) {
 
 userSchema.methods.toJSON = function toJSON() {
 	const user = this;
-	const publicUser = (({ username, displayname }) => ({ username, displayname }))(user);
+	const publicUser = (({ username, displayname, _id }) => ({ username, displayname, _id }))(user);
 	return publicUser;
 };
 
