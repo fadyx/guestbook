@@ -1,7 +1,7 @@
 {
 	"name": "guestbook",
 	"version": "0.0.1",
-	"description": "Guestbook MERN stack web application mono repository.",
+	"description": "Guestbook MERN stack web application. Backend repository.",
 	"author": "fady",
 	"license": "Unlicense",
 	"private": true,
